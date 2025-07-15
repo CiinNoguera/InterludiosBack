@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { Option, OptionSchema } from './option.schema';
 
 export type NodeDocument = Node & Document;
 
@@ -16,17 +17,10 @@ export class Node {
 
   @ApiProperty({
     description: 'Opciones de decisiones que puede tomar el usuario',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        texto: { type: 'string' },
-        nextId: { type: 'string' },
-      },
-    },
+    type: [Option],
   })
-  @Prop({ type: [{ texto: String, nextId: String }], default: [] })
-  opciones: { texto: string; nextId: string }[];
+  @Prop({ type: [OptionSchema], default: [] })
+  opciones: Option[];
 }
 
 export const NodeSchema = SchemaFactory.createForClass(Node);
