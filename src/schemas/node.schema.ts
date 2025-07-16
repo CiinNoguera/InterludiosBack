@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Option, OptionSchema } from './option.schema';
+import { Option } from './option.schema';
+import * as mongoose from 'mongoose';
+
 
 export type NodeDocument = Node & Document;
 
@@ -16,11 +18,12 @@ export class Node {
   texto: string;
 
   @ApiProperty({
-    description: 'Opciones de decisiones que puede tomar el usuario',
-    type: [Option],
+    description: 'IDs de las opciones asociadas a este nodo',
+    type: () => [Option],
+    example: ['64f8b3f1a9a7c12345678901', '64f8b3f1a9a7c12345678902'],
   })
-  @Prop({ type: [OptionSchema], default: [] })
-  opciones: Option[];
+  @Prop({ type: [{  type: mongoose.Schema.Types.ObjectId, ref: 'Option'  }], default: [] })
+  opciones: (Types.ObjectId | Option)[];
 }
 
 export const NodeSchema = SchemaFactory.createForClass(Node);

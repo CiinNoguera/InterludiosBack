@@ -47,7 +47,7 @@ export class InterludesController {
 
     
     @Delete(':id')
-     @ApiOperation({ summary: 'Eliminar un nodo por ID' })
+    @ApiOperation({ summary: 'Eliminar un nodo por ID' })
     @ApiParam({ name: 'id', description: 'ID del nodo a eliminar' })
     @ApiResponse({ status: 200, description: 'Nodo eliminado' })
     async delete(@Param('id') id: string) {

@@ -2,13 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { OptionDto } from 'src/dto/option.dto';
+import { Node } from 'src/schemas/node.schema';
 import { Option, OptionDocument } from 'src/schemas/option.schema';
 import { v4 as uuidv4 } from 'uuid'
 
 @Injectable()
 export class OptionsService {
     constructor(
-        @InjectModel(Option.name) private readonly optionModel: Model<Option>
+        @InjectModel(Option.name) private readonly optionModel: Model<Option>,
+        @InjectModel(Node.name) private readonly nodeModel: Model<Node>
     ) {}
 
     async createOption(createOption : OptionDto) : Promise<OptionDocument> {
@@ -16,7 +18,14 @@ export class OptionsService {
             id: uuidv4(),
             ...createOption
         });
-        return await option.save();
+
+        const savedOption = await option.save();
+        await this.nodeModel.findOneAndUpdate(
+            { id: createOption.nodeId },
+            { $push: { opciones: savedOption._id } }
+        );
+
+        return savedOption;
     }
 
     async getAllOptions() : Promise<OptionDocument[]> {
