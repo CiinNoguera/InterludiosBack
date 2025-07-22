@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { OptionDto } from 'src/dto/option.dto';
@@ -14,12 +14,17 @@ export class OptionsService {
     ) {}
 
     async createOption(createOption : OptionDto) : Promise<OptionDocument> {
-        const option = new this.optionModel({
-            id: uuidv4(),
-            ...createOption
-        });
+        if (createOption.id) {
+            const existing = await this.optionModel.findOne({ id: createOption.id });
+            if (existing) {
+            throw new BadRequestException(`Ya existe una opción con id "${createOption.id}"`);
+            }
+        } else {
+            createOption.id = uuidv4();
+        }
 
-        const savedOption = await option.save();
+        const savedOption = new this.optionModel(createOption);
+        await savedOption.save();
         await this.nodeModel.findOneAndUpdate(
             { id: createOption.nodeId },
             { $push: { opciones: savedOption._id } }

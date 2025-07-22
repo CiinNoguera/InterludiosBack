@@ -2,6 +2,11 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsOptional, IsString } from "class-validator";
 
 export class OptionDto {
+  @ApiProperty({ description: 'ID del siguiente nodo al que lleva esta opción' })
+  @IsOptional()
+  @IsString()
+  id?: string;
+
   @ApiProperty({ description: 'Texto que se muestra como opción para el usuario' })
   @IsString()
   texto: string;

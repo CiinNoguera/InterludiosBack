@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateNodeDto } from 'src/dto/createNode.dto';
@@ -14,17 +14,21 @@ export class InterludesService {
     ) {}
 
     async create(createNode: CreateNodeDto) : Promise<Node> {
-       const node = new this.nodeModel({
-            id: uuidv4(),
-            texto: createNode.texto,
-        });
+        if(createNode.id) {
+            const existing = await this.nodeModel.findOne({id: createNode.id});
+        if (existing) {
+            throw new BadRequestException(`Ya existe un nodo con id "${createNode.id}"`);
+            }
+        } else {   
+            createNode.id = uuidv4();
+        }
 
+        const node = new this.nodeModel(createNode);
         await node.save();
 
         const options = await this.optionModel.find({ nodeId: node.id }).exec();
-
         node.opciones = options.map((opt) => opt._id);
-            await node.save();
+        await node.save();
 
         return node;
   }

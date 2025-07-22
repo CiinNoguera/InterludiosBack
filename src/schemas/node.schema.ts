@@ -3,6 +3,7 @@ import { Document, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Option } from './option.schema';
 import * as mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 
 export type NodeDocument = Node & Document;
@@ -10,7 +11,10 @@ export type NodeDocument = Node & Document;
 @Schema()
 export class Node {
   @ApiProperty({ description: 'Identificador único del nodo' })
-  @Prop({ required: true, unique: true })
+  @Prop({ 
+    required: true,
+    type: String,
+    default: () => uuidv4()})
   id: string;
 
   @ApiProperty({ description: 'Texto del fragmento de historia que se muestra' })

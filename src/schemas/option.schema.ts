@@ -2,13 +2,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
+import { v4 as uuidv4 } from 'uuid';
 
 export type OptionDocument = Option & Document;
 
 @Schema()
 export class Option {
   @ApiProperty({ description: 'ID único de la opción' })
-  @Prop({ required: true, unique: true })
+ @Prop({ 
+    required: true,
+    type: String,
+    default: () => uuidv4()})
   id: string;
 
   @ApiProperty({ description: 'Texto que se muestra como opción para el usuario' })
