@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, Param, Patch, Delete } from '@nestjs/commo
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { OptionsService } from './options.service';
 import { OptionDto } from 'src/dto/option.dto';
-import { Option, OptionDocument, OptionSchema } from 'src/schemas/option.schema';
+import { Option, OptionDocument } from 'src/schemas/option.schema';
 
 @ApiTags('Opciones')
 @Controller('options')
