@@ -17,6 +17,11 @@ export class Node {
     default: () => uuidv4()})
   id: string;
 
+  @ApiProperty({ description: 'Identifica nodo inicial'})
+  @Prop({ type: Boolean, default: false })
+  raiz?: boolean;
+  
+
   @ApiProperty({ description: 'Texto del fragmento de historia que se muestra' })
   @Prop({ required: true })
   texto: string;

@@ -25,6 +25,13 @@ export class InterludesController {
         return this.interludesService.getAll();
     }
 
+    @Get('root')
+    @ApiOperation({ summary: 'Obtener nodo inicial' })
+    @ApiResponse({ status: 200, description: 'Nodo inicial', type: Node })
+    async getRoot() : Promise<Node>{
+        return this.interludesService.getRoot();
+    }
+
    
     @Get(':id')
     @ApiOperation({ summary: 'Obtener un nodo por ID' })

@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsOptional, IsString } from "class-validator";
 import { OptionDto } from "./option.dto";
 
 export class CreateNodeDto {
@@ -8,6 +7,11 @@ export class CreateNodeDto {
   @IsOptional()
   @IsString()
   id?: string;
+
+  @ApiProperty({ description: 'Indica si el nodo es un nodo raíz' })
+  @IsOptional()
+  @IsBoolean()
+  raiz?: boolean;
 
   @ApiProperty({ description: 'Texto del fragmento de historia que se muestra' })
   @IsString()

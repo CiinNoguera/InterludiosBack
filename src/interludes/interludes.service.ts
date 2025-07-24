@@ -44,6 +44,14 @@ export class InterludesService {
         return node;
     }
 
+    async getRoot() : Promise<Node> {
+        const node = await this.nodeModel.findOne({raiz : true}).populate('opciones').exec();
+        if(!node) {
+            throw new NotFoundException('Nodo inicial no encontrado')
+        }
+        return node;
+    }
+
    async update(id: string, updateNode: Partial<CreateNodeDto>) : Promise<Node> {
         const node = await this.nodeModel.findOneAndUpdate({id}, updateNode , {new: true}).exec();
         if(!node) {
