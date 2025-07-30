@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsBoolean, IsOptional, IsString } from "class-validator";
-import { OptionDto } from "./option.dto";
 
 export class CreateNodeDto {
   @ApiProperty({ description: 'Identificador único del nodo' })
