@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 export type HistoryDocument = History & Document;
@@ -21,6 +21,10 @@ export class History extends Document {
   @ApiProperty({ description: 'Breve descripción de la historia'})
   @Prop({ required: true })
   description: string;
+
+  @ApiProperty({ description: 'Nodo raiz'})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Node' })
+  rootNode: Node;
 
   @ApiProperty({ description: 'Nombre del autor'})
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
