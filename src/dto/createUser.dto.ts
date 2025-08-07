@@ -2,11 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateUser {
-   @ApiProperty({ description: 'Identificador único del nodo' })
-   @IsOptional()
-   @IsString()
-   id?: string;
-
    @ApiProperty({ description: 'Email del usuario'})
    @IsNotEmpty()
    @IsString()
